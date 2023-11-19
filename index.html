@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Rep Revolution</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 8px;
+      margin: 4px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <script>
+    function addEntry() {
+      // Get values from user input
+      var muscleGroup = document.getElementById('muscleGroup').value;
+      var date = document.getElementById('date').value;
+      var workout = document.getElementById('workout').value;
+      var reps = document.getElementById('reps').value;
+      var weight = document.getElementById('weight').value;
+      var sets = document.getElementById('sets').value;
+
+      // Get the table body
+      var tableBody = document.getElementById('workoutTableBody');
+
+      // Create a new row and cells
+      var newRow = tableBody.insertRow(0);
+      var cell1 = newRow.insertCell(0);
+      var cell2 = newRow.insertCell(1);
+      var cell3 = newRow.insertCell(2);
+      var cell4 = newRow.insertCell(3);
+      var cell5 = newRow.insertCell(4);
+      var cell6 = newRow.insertCell(5);
+
+      // Populate the cells with user input
+      cell1.innerHTML = muscleGroup;
+      cell2.innerHTML = date;
+      cell3.innerHTML = workout;
+      cell4.innerHTML = reps;
+      cell5.innerHTML = weight;
+      cell6.innerHTML = sets;
+
+      // Clear input fields for the next entry
+      document.getElementById('workoutForm').reset();
+    }
+  </script>
+</head>
+<body>
+
+  <h2>Rep Revolution</h2>
+
+  <table id="workoutTable">
+    <thead>
+      <tr>
+        <th>Muscle Group</th>
+        <th>Date</th>
+        <th>Workout</th>
+        <th>Reps</th>
+        <th>Weight</th>
+        <th>Sets</th>
+      </tr>
+    </thead>
+    <tbody id="workoutTableBody">
+      <!-- Entries will be added here dynamically -->
+    </tbody>
+  </table>
+
+  <form id="workoutForm">
+    <label for="muscleGroup">Muscle Group:</label>
+    <select id="muscleGroup" name="muscleGroup">
+      <option value="chest">Chest</option>
+      <option value="backAndShoulder">Back and Shoulder</option>
+      <option value="legs">Legs</option>
+      <option value="arms">Arms</option>
+    </select>
+
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="workout">Workout:</label>
+    <select id="workout" name="workout" required>
+      <!-- Options will be added dynamically based on the selected muscle group -->
+    </select>
+
+    <label for="reps">Reps:</label>
+    <input type="number" id="reps" name="reps" required>
+
+    <label for="weight">Weight (lbs):</label>
+    <input type="number" id="weight" name="weight" required>
+
+    <label for="sets">Sets:</label>
+    <input type="number" id="sets" name="sets" required>
+
+    <button type="button" onclick="addEntry()">Add Entry</button>
+  </form>
+
+  <script>
+    // Update workout options based on selected muscle group
+    document.getElementById('muscleGroup').addEventListener('change', function () {
+      var workoutSelect = document.getElementById('workout');
+      workoutSelect.innerHTML = ''; // Clear previous options
+
+      var selectedMuscleGroup = this.value;
+
+      var workoutOptions;
+      if (selectedMuscleGroup === 'chest') {
+        workoutOptions = ['Bench', 'Chest Press', 'Pec Deck'];
+      } else if (selectedMuscleGroup === 'backAndShoulder') {
+        workoutOptions = ['Lateral Raises', 'Lat Pulldown', 'Rear Deltoid Cable Pulls'];
+      } else if (selectedMuscleGroup === 'legs') {
+        workoutOptions = ['Squat', 'Leg Press', 'Leg Extensions'];
+      } else if (selectedMuscleGroup === 'arms') {
+        workoutOptions = ['Tricep Pull', 'Bicep Curls', 'Forearm Curls'];
+      }
+
+      // Add options to the workout select element
+      workoutOptions.forEach(function (option) {
+        var optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.text = option;
+        workoutSelect.add(optionElement);
+      });
+    });
+  </script>
+
+</body>
+</html>
