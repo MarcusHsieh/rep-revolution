@@ -57,6 +57,8 @@
     }
   </style>
   <script>
+
+    // ADD ENTRY TO LIST
     function addEntry() {
       // Get values from user input
       var muscleGroup = document.getElementById('muscleGroup').value;
@@ -66,7 +68,7 @@
       var weight = document.getElementById('weight').value;
       var sets = document.getElementById('sets').value;
 
-      // Get the table body
+      // Get table body
       var tableBody = document.getElementById('workoutTableBody');
 
       // Create a new row and cells
@@ -78,7 +80,7 @@
       var cell5 = newRow.insertCell(4);
       var cell6 = newRow.insertCell(5);
 
-      // Populate the cells with user input
+      // Populatecells with user input
       cell1.innerHTML = muscleGroup;
       cell2.innerHTML = date;
       cell3.innerHTML = workout;
@@ -86,8 +88,30 @@
       cell5.innerHTML = weight;
       cell6.innerHTML = sets;
 
+      // Update last entry date
+      lastEntryDate = date;
+
       // Clear input fields for the next entry
       document.getElementById('workoutForm').reset();
+      var workoutSelect = document.getElementById('workout');
+      workoutSelect.innerHTML = ''; // Clear previous options
+    }
+
+    // PLUS MINUS BUTTONS
+    function updateValue(field, operation) {
+      var inputElement = document.getElementById(field);
+      var currentValue = parseInt(inputElement.value, 10) || 0;
+
+      // Increment or decrement by 1 or 5 based on the operation
+      var step = operation === 'increment' ? 1 : -1;
+      var newValue = currentValue + step * (inputElement.step || 1);
+
+      // Update input field value
+      inputElement.value = newValue;
+
+      // Trigger a change event to update the displayed value
+      var event = new Event('change');
+      inputElement.dispatchEvent(event);
     }
   </script>
 </head>
@@ -95,6 +119,7 @@
 
   <h2>Rep Revolution</h2>
 
+  <!-- TABLE HEADERS -->
   <table id="workoutTable">
     <thead>
       <tr>
@@ -112,35 +137,53 @@
   </table>
 
   <form id="workoutForm">
+    <!-- Muscle Group options-->
     <label for="muscleGroup">Muscle Group:</label>
     <select id="muscleGroup" name="muscleGroup">
+      <option value=""></option>
       <option value="chest">Chest</option>
       <option value="backAndShoulder">Back and Shoulder</option>
       <option value="legs">Legs</option>
       <option value="arms">Arms</option>
     </select>
 
+    <!-- Date options -->
     <label for="date">Date:</label>
     <input type="date" id="date" name="date" required>
 
+    <!-- Workout options -->
     <label for="workout">Workout:</label>
     <select id="workout" name="workout" required>
       <!-- Options will be added dynamically based on the selected muscle group -->
     </select>
 
+    <!-- Reps count -->
     <label for="reps">Reps:</label>
-    <input type="number" id="reps" name="reps" required>
+    <div>
+      <button type="button" onclick="updateValue('reps', 'decrement')">-</button>
+      <input type="number" id="reps" name="reps" required>
+      <button type="button" onclick="updateValue('reps', 'increment')">+</button>
+    </div>
 
+    <!-- Weight count -->
     <label for="weight">Weight (lbs):</label>
     <input type="number" id="weight" name="weight" required>
 
+    <!-- Set count -->
     <label for="sets">Sets:</label>
-    <input type="number" id="sets" name="sets" required>
+    <div>
+      <button type="button" onclick="updateValue('sets', 'decrement')">-</button>
+      <input type="number" id="sets" name="sets" required>
+      <button type="button" onclick="updateValue('sets', 'increment')">+</button>
+    </div>
 
+    <!-- ADD ENTRY BUTTON -->
     <button type="button" onclick="addEntry()">Add Entry</button>
   </form>
 
+
   <script>
+
     // Update workout options based on selected muscle group
     document.getElementById('muscleGroup').addEventListener('change', function () {
       var workoutSelect = document.getElementById('workout');
@@ -167,6 +210,7 @@
         workoutSelect.add(optionElement);
       });
     });
+
   </script>
 
 </body>
