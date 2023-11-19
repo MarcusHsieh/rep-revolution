@@ -4,6 +4,7 @@
     <title>Rep Revolution</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -57,6 +58,7 @@
     }
   </style>
   <script>
+    var lastEntryDate = null;
 
     // ADD ENTRY TO LIST
     function addEntry() {
@@ -113,6 +115,22 @@
       var event = new Event('change');
       inputElement.dispatchEvent(event);
     }
+
+    // DOWNLOAD AS PNG BUTTON
+    function downloadAsPNG() {
+      // Get the table element
+      var table = document.getElementById('workoutTable');
+
+      // Use html2canvas to capture the table as an image
+      html2canvas(table).then(function(canvas) { // html2canvas function called, takes in table as arg
+        // Convert the canvas to a data URL and create a download link
+        var dataURL = canvas.toDataURL('image/png'); 
+        var link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'workout_list.png';
+        link.click();
+      });
+    }
   </script>
 </head>
 <body>
@@ -136,6 +154,11 @@
     </tbody>
   </table>
 
+  <!-- DOWNLOAD AS PNG BUTTON -->
+  <button onclick="downloadAsPNG()">Download as PNG to share!</button>
+
+  <br><br><br>
+
   <form id="workoutForm">
     <!-- Muscle Group options-->
     <label for="muscleGroup">Muscle Group:</label>
@@ -147,15 +170,21 @@
       <option value="arms">Arms</option>
     </select>
 
+    <br><br>
+
     <!-- Date options -->
     <label for="date">Date:</label>
     <input type="date" id="date" name="date" required>
+
+    <br><br>
 
     <!-- Workout options -->
     <label for="workout">Workout:</label>
     <select id="workout" name="workout" required>
       <!-- Options will be added dynamically based on the selected muscle group -->
     </select>
+
+    <br><br>
 
     <!-- Reps count -->
     <label for="reps">Reps:</label>
@@ -165,9 +194,13 @@
       <button type="button" onclick="updateValue('reps', 'increment')">+</button>
     </div>
 
+    <br><br>
+
     <!-- Weight count -->
     <label for="weight">Weight (lbs):</label>
     <input type="number" id="weight" name="weight" required>
+
+    <br><br>
 
     <!-- Set count -->
     <label for="sets">Sets:</label>
@@ -176,6 +209,8 @@
       <input type="number" id="sets" name="sets" required>
       <button type="button" onclick="updateValue('sets', 'increment')">+</button>
     </div>
+
+    <br><br>
 
     <!-- ADD ENTRY BUTTON -->
     <button type="button" onclick="addEntry()">Add Entry</button>
